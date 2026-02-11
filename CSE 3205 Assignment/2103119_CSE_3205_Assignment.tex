@@ -3,6 +3,8 @@
 % =========================================================
 %  CSE 3205 Assignment (Single-file LaTeX)
 %  Color Design + Graph + GitHub link
+%  - References REMOVED
+%  - UML diagram ADDED (TikZ)
 % =========================================================
 
 \usepackage[a4paper,margin=1in]{geometry}
@@ -26,6 +28,7 @@
 
 % ---------- Links ----------
 \usepackage[hidelinks]{hyperref}
+\usepackage{xurl} % nice line breaks for long URLs
 \hypersetup{
   colorlinks=true,
   linkcolor=blue,
@@ -33,13 +36,11 @@
   citecolor=blue
 }
 
-% ---------- Graphs ----------
+% ---------- Graphs / UML ----------
 \usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.multipart,fit}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
-
-% ---------- Optional QR (uncomment if you want QR code) ----------
-% \usepackage{qrcode}
 
 % ---------- Lists ----------
 \setlist[itemize]{noitemsep, topsep=3pt}
@@ -77,18 +78,12 @@
   arc=3mm,
   boxrule=0.8pt
 }
-\newtcolorbox{keypoint}{
-  colback=white,
-  colframe=Accent,
-  arc=2mm,
-  boxrule=0.7pt
-}
 
 % ---------- Table row colors ----------
 \rowcolors{2}{Soft}{white}
 
 % =========================================================
-%  STUDENT INFORMATION (FILLED)
+%  STUDENT INFORMATION
 % =========================================================
 \newcommand{\StudentName}{Arif Foysal Bin Haider}
 \newcommand{\StudentRoll}{2103119}
@@ -97,8 +92,11 @@
 \newcommand{\TeacherName}{Md.\ Sozib Hossain}
 \newcommand{\SubmissionDate}{12 February 2026}
 
-% Put your GitHub repository link here:
-\newcommand{\GitHubLink}{https://github.com/your-username/your-repo} % <-- EDIT THIS
+% =========================================================
+%  GitHub Link
+% =========================================================
+% NOTE: % in URL must be escaped as \%
+\newcommand{\GitHubLink}{https://github.com/TheObsidianEye-ARIF-FOYSAL/cse-3205/blob/main/CSE\%203205\%20Assignment/2103119_CSE_3205_Assignment.tex}
 
 \begin{document}
 
@@ -132,13 +130,8 @@ Date of Submission & : \SubmissionDate\\
 \vspace{1.0cm}
 
 \begin{infobox}{GitHub Repository (Code Reference)}
-\textbf{Link:} \href{\GitHubLink}{\url{\GitHubLink}}\\
-(Teacher can review implementation, diagrams source, tests, and version history.)
+\textbf{Link:} \url{\GitHubLink}\\
 \end{infobox}
-
-% Optional QR code:
-% \vspace{0.4cm}
-% \qrcode[height=2.8cm]{\GitHubLink}
 
 \vfill
 
@@ -420,29 +413,129 @@ It supports dynamic creation of \textbf{families of related device objects} (e.g
 without specifying concrete classes in the controller, enabling centralized management with loose coupling.
 \end{infobox}
 
-\subsection*{Diagram (Insert your Draw.io image)}
-Export a class diagram from Draw.io (PNG) and insert it here using \texttt{\textbackslash includegraphics}.
+\subsection{2. UML Class Diagram (Abstract Factory)}
 \begin{figure}[H]
 \centering
-\fbox{\parbox{0.9\textwidth}{
-\textbf{Diagram Guide (Abstract Factory):}\\
-SmartDeviceFactory interface: createLight(), createFan(), createSensor()\\
-Concrete factories: PhilipsFactory, XiaomiFactory, etc.\\
-Product interfaces: Light, Fan, Sensor\\
-Concrete products per family: PhilipsLight, XiaomiLight, etc.\\
-SmartHomeController uses only interfaces and keeps a device list for central control.
-}}
-\caption{Abstract Factory applied to Smart Home Automation (insert diagram)}
+\begin{tikzpicture}[
+  class/.style={
+    draw=Primary, rounded corners=2mm, very thick,
+    fill=Soft, text width=5.2cm, align=left, inner sep=4pt
+  },
+  rel/.style={-Latex, thick, draw=Primary},
+  impl/.style={-Latex, thick, dashed, draw=Primary}
+]
+
+% ---- Factory interface ----
+\node[class] (factory) {
+\textbf{SmartDeviceFactory (interface)}\\ \hline
++ createLight(): Light\\
++ createFan(): Fan\\
++ createSensor(): Sensor
+};
+
+% ---- Concrete factories ----
+\node[class, below left=1.2cm and 0.6cm of factory] (philipsF) {
+\textbf{PhilipsFactory}\\ \hline
++ createLight(): Light\\
++ createFan(): Fan\\
++ createSensor(): Sensor
+};
+
+\node[class, below right=1.2cm and 0.6cm of factory] (xiaomiF) {
+\textbf{XiaomiFactory}\\ \hline
++ createLight(): Light\\
++ createFan(): Fan\\
++ createSensor(): Sensor
+};
+
+\draw[impl] (philipsF.north) -- (factory.south);
+\draw[impl] (xiaomiF.north) -- (factory.south);
+
+% ---- Product interfaces ----
+\node[class, right=1.2cm of factory, text width=4.4cm] (lightI) {
+\textbf{Light (interface)}\\ \hline
++ on()\\
++ off()
+};
+\node[class, below=1.0cm of lightI, text width=4.4cm] (fanI) {
+\textbf{Fan (interface)}\\ \hline
++ start()\\
++ stop()
+};
+\node[class, below=1.0cm of fanI, text width=4.4cm] (sensorI) {
+\textbf{Sensor (interface)}\\ \hline
++ read(): data
+};
+
+% ---- Concrete products (Philips) ----
+\node[class, below=1.1cm of philipsF, text width=4.7cm] (pLight) {
+\textbf{PhilipsLight}\\ \hline
++ on()\\
++ off()
+};
+\node[class, below=0.9cm of pLight, text width=4.7cm] (pFan) {
+\textbf{PhilipsFan}\\ \hline
++ start()\\
++ stop()
+};
+\node[class, below=0.9cm of pFan, text width=4.7cm] (pSensor) {
+\textbf{PhilipsSensor}\\ \hline
++ read(): data
+};
+
+% ---- Concrete products (Xiaomi) ----
+\node[class, below=1.1cm of xiaomiF, text width=4.7cm] (xLight) {
+\textbf{XiaomiLight}\\ \hline
++ on()\\
++ off()
+};
+\node[class, below=0.9cm of xLight, text width=4.7cm] (xFan) {
+\textbf{XiaomiFan}\\ \hline
++ start()\\
++ stop()
+};
+\node[class, below=0.9cm of xFan, text width=4.7cm] (xSensor) {
+\textbf{XiaomiSensor}\\ \hline
++ read(): data
+};
+
+% ---- Realizations to product interfaces ----
+\draw[impl] (pLight.east) -- (lightI.west);
+\draw[impl] (xLight.east) -- (lightI.west);
+
+\draw[impl] (pFan.east) -- (fanI.west);
+\draw[impl] (xFan.east) -- (fanI.west);
+
+\draw[impl] (pSensor.east) -- (sensorI.west);
+\draw[impl] (xSensor.east) -- (sensorI.west);
+
+% ---- Controller ----
+\node[class, above=1.2cm of lightI, text width=5.4cm] (controller) {
+\textbf{SmartHomeController}\\ \hline
+- factory: SmartDeviceFactory\\
+- devices: List\\ \hline
++ addDevices()\\
++ controlAll()
+};
+\draw[rel] (controller.west) -- (factory.east);
+
+% ---- Factory creates products ----
+\draw[rel] (factory.east) to[bend left=10] (lightI.west);
+\draw[rel] (factory.east) to[bend left=10] (fanI.west);
+\draw[rel] (factory.east) to[bend left=10] (sensorI.west);
+
+\end{tikzpicture}
+\caption{UML Class Diagram: Abstract Factory Pattern for Smart Home Automation System}
 \end{figure}
 
-\subsection{2. Engineering Justification}
+\subsection{3. Engineering Justification}
 \begin{itemize}
   \item \textbf{Scalability:} add new device types/families by extending factories and product classes; controller unchanged.
   \item \textbf{Maintainability:} creation/initialization logic stays in factory classes, isolating vendor changes.
   \item \textbf{Flexibility:} runtime factory selection allows different vendors/configurations without rewriting core logic.
 \end{itemize}
 
-\subsection{3. Comparative Analysis}
+\subsection{4. Comparative Analysis}
 \textbf{Alternative: Simple Factory / Direct Instantiation.} Direct creation (e.g., \texttt{new Light()})
 couples controller to concrete classes, making expansion harder and increasing modification risk.
 
@@ -464,7 +557,7 @@ Static logic; behavior changes require code edits/redeploy.\\
 \end{tabular}
 \end{table}
 
-\subsection{4. Modern Tool Integration (Git/SCM)}
+\subsection{5. Modern Tool Integration (Git/SCM)}
 \textbf{Role of Git:}
 \begin{itemize}
   \item Version history and traceability for device-driver changes.
@@ -492,18 +585,5 @@ This assignment demonstrates a structured understanding of software engineering 
 process model for evolving requirements, (ii) designing a multi-layer testing and SQA strategy to ensure reliability
 and data correctness, and (iii) applying suitable design patterns with modern Git-based configuration management.
 These practices collectively support scalability, maintainability, adaptability, and real-world software quality.
-
-% =========================================================
-%  REFERENCES
-% =========================================================
-\section*{References}
-\begin{thebibliography}{9}
-\bibitem{boehm1988}
-B. Boehm, ``A Spiral Model of Software Development and Enhancement,'' \textit{Computer}, 1988.
-\bibitem{scrumguide}
-K. Schwaber and J. Sutherland, \textit{The Scrum Guide}, 2020.
-\bibitem{gof}
-E. Gamma, R. Helm, R. Johnson, and J. Vlissides, \textit{Design Patterns: Elements of Reusable Object-Oriented Software}, Addison-Wesley, 1994.
-\end{thebibliography}
 
 \end{document}

@@ -1,0 +1,236 @@
+\documentclass[12pt,a4paper]{article}
+
+% ------------------------------------------------
+% Packages
+% ------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{tcolorbox}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+\geometry{margin=1in}
+\onehalfspacing
+\hypersetup{colorlinks=true, linkcolor=blue}
+
+% ------------------------------------------------
+% Colors
+% ------------------------------------------------
+\definecolor{ruetblue}{RGB}{0,51,102}
+\definecolor{accent}{RGB}{102,0,204}
+\definecolor{lightgray}{RGB}{245,245,245}
+
+% ------------------------------------------------
+% Section Formatting
+% ------------------------------------------------
+\titleformat{\section}
+{\color{ruetblue}\normalfont\Large\bfseries}
+{\thesection}{1em}{}
+
+\titleformat{\subsection}
+{\color{accent}\normalfont\large\bfseries}
+{\thesubsection}{1em}{}
+
+% ------------------------------------------------
+% Header/Footer
+% ------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{CSE 3206 -- Software Engineering Sessional}
+\fancyhead[R]{CO4 Reflection Essay}
+\fancyfoot[C]{\thepage}
+
+% ------------------------------------------------
+% Document Begins
+% ------------------------------------------------
+\begin{document}
+
+% ------------------------------------------------
+% Cover Page
+% ------------------------------------------------
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    {\Huge \textbf{\textcolor{ruetblue}{RAJSHAHI UNIVERSITY OF ENGINEERING \& TECHNOLOGY}}}\\[0.4cm]
+    {\Large Department of Computer Science \& Engineering}\\[0.8cm]
+    
+    \textcolor{accent}{\rule{\linewidth}{2pt}}\\[0.8cm]
+    
+    {\Huge \textbf{\textcolor{accent}{CO4 Reflection Essay}}}\\[0.4cm]
+    {\Large CSE 3206 -- Software Engineering Sessional}\\[0.8cm]
+    
+    \textcolor{accent}{\rule{\linewidth}{2pt}}\\[1.5cm]
+    
+    \begin{tcolorbox}[colback=lightgray,colframe=ruetblue,width=0.8\linewidth]
+    \centering
+    \textbf{Project Title:}\\
+    \large Animal Classifier AI\\[0.4cm]
+    \textbf{Student Name:} Arif Foysal Bin Haider\\
+    \textbf{Section:} B\\
+    \textbf{Series:} 21\\
+    \textbf{Course Code:} CSE 3206\\
+    \textbf{Date of Submission:} 12 February, 2026
+    \end{tcolorbox}
+    
+    \vfill
+    
+    \textcolor{ruetblue}{\rule{\linewidth}{1.5pt}}\\
+    {\large \textit{Heaven's Light is Our Guide}}
+    
+\end{titlepage}
+
+% ------------------------------------------------
+% Essay Begins
+% ------------------------------------------------
+
+\section*{Reflection Essay: Self-Directed Learning in Software Engineering}
+\addcontentsline{toc}{section}{Reflection Essay}
+
+\section{Introduction}
+
+During the CSE 3206 Software Engineering Sessional, I developed a full-stack AI-powered web application titled \textbf{Animal Classifier AI}. The system classifies images of ten animal categories using deep learning and provides real-time predictions through a web interface. While classroom instruction introduced general software engineering principles, this project required me to independently learn and integrate advanced tools and techniques beyond the syllabus.
+
+The most significant technical decision in this project was adopting \textbf{Transfer Learning using MobileNetV2} within TensorFlow/Keras, combined with a Flask-based RESTful backend architecture and appropriate software design patterns. This essay reflects on that decision, the independent learning challenges I encountered, and how this experience shaped my readiness for lifelong learning.
+
+% ------------------------------------------------
+
+\section{Technical Decision and Justification}
+
+\subsection{Chosen Technique: Transfer Learning with MobileNetV2}
+
+The primary new technique I independently learned was \textbf{Transfer Learning using MobileNetV2}. Instead of building a convolutional neural network from scratch, I utilized a pre-trained model trained on ImageNet and added a custom classification head for ten animal classes.
+
+MobileNetV2 was appropriate because:
+
+\begin{itemize}
+    \item It is lightweight (approximately 3.5 million parameters).
+    \item It provides fast inference time (50--100ms).
+    \item It achieves high validation accuracy (around 95\%).
+    \item It is optimized for web and mobile deployment.
+\end{itemize}
+
+The architecture uses inverted residual blocks and depthwise separable convolutions, significantly reducing computational cost. Since my system required real-time predictions in a web environment, efficiency and deployment feasibility were critical.
+
+\subsection{Comparison with Alternative: Custom CNN}
+
+Before selecting MobileNetV2, I considered designing a custom CNN from scratch. Although this would provide architectural control, it had several disadvantages:
+
+\begin{itemize}
+    \item Higher risk of overfitting due to limited dataset.
+    \item Larger model size and slower inference.
+    \item Longer training time.
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Aspect} & \textbf{Custom CNN} & \textbf{MobileNetV2} \\
+\midrule
+Parameters & 10M+ & 3.5M \\
+Model Size & Large & 10.42MB \\
+Inference Speed & Moderate & 50--100ms \\
+Deployment Ready & Difficult & Optimized \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus, MobileNetV2 was superior in scalability, memory efficiency, and production readiness.
+
+\subsection{Supporting Architectural Decisions}
+
+To ensure performance and maintainability, I also implemented:
+
+\begin{itemize}
+    \item \textbf{Singleton Pattern} for loading the ML model once at startup.
+    \item \textbf{Factory Pattern} for image preprocessing.
+    \item \textbf{RESTful API design} using Flask.
+    \item \textbf{Layered MVC architecture} separating Model, View, and Controller.
+\end{itemize}
+
+The Singleton pattern significantly reduced latency by avoiding repeated model loading. These decisions demonstrate deliberate architectural thinking rather than ad-hoc implementation.
+
+% ------------------------------------------------
+
+\section{Self-Directed Learning Experience}
+
+\subsection{Key Challenges}
+
+\textbf{Understanding Transfer Learning:}  
+Initially, freezing and fine-tuning layers seemed simple. However, determining when to unfreeze layers, selecting appropriate learning rates, and preventing catastrophic forgetting required deeper exploration of TensorFlow documentation and academic resources.
+
+\textbf{Model Optimization for Deployment:}  
+The initial model was large and slow to load. Through experimentation and research, I optimized it to approximately 10.42MB without sacrificing accuracy.
+
+\textbf{Backend Integration:}  
+Integrating a deep learning model into a Flask production server introduced challenges such as error handling, file validation, memory management, and deployment configuration.
+
+\textbf{Deployment and DevOps:}  
+Deploying to cloud platforms required learning Gunicorn configuration, environment management, and health monitoring strategies.
+
+\subsection{Critical Evaluation of Learning Resources}
+
+\begin{itemize}
+    \item \textbf{Official TensorFlow Documentation:} Technically accurate but complex.
+    \item \textbf{Real Python Tutorials:} Most helpful for practical implementation.
+    \item \textbf{Stack Overflow:} Useful for debugging specific issues but required verification.
+    \item \textbf{YouTube Tutorials:} Good for conceptual overview but inefficient for deep learning.
+\end{itemize}
+
+I learned to combine authoritative documentation with practical tutorials while critically evaluating community solutions.
+
+% ------------------------------------------------
+
+\section{Reflection and Future Learning Plan}
+
+\subsection{Transformation in Learning Approach}
+
+This project transformed my mindset in three key ways:
+
+\begin{itemize}
+    \item From passive tutorial-following to problem-driven learning.
+    \item From isolated technical skills to systems-level thinking.
+    \item From fear of complexity to confidence in independent exploration.
+\end{itemize}
+
+I now understand that software engineering involves integrating architecture, design patterns, deployment strategies, and user experience into a cohesive system.
+
+\subsection{Future Learning Plan: Docker and CI/CD}
+
+The next skill I plan to learn is \textbf{Docker containerization and CI/CD pipelines} using GitHub Actions.
+
+\textbf{Why:}
+\begin{itemize}
+    \item To eliminate environment inconsistency.
+    \item To automate testing before deployment.
+    \item To enable scalable and reliable production releases.
+\end{itemize}
+
+\textbf{Plan:}
+\begin{enumerate}
+    \item Weeks 1--2: Complete Docker official tutorial.
+    \item Weeks 3--4: Containerize Animal Classifier AI.
+    \item Weeks 5--6: Implement GitHub Actions pipeline.
+    \item Week 7: Document and publish technical workflow.
+\end{enumerate}
+
+This structured plan reflects lessons learned from my current project: layered learning, practical application, and integration.
+
+% ------------------------------------------------
+
+\section{Conclusion}
+
+The Animal Classifier AI project was not merely an academic requirement—it was a transformative experience in self-directed learning. By independently mastering transfer learning, RESTful architecture, software design patterns, and deployment strategies, I developed both technical competence and the meta-skill of continuous learning.
+
+Technology evolves rapidly. Frameworks change, tools improve, and paradigms shift. However, the ability to independently analyze requirements, evaluate alternatives, learn new tools, and integrate them effectively remains constant. This project strengthened that foundational ability and prepared me for lifelong professional growth as a software engineer.
+
+\vspace{0.5cm}
+\textcolor{ruetblue}{\rule{\linewidth}{1pt}}
+
+\end{document}

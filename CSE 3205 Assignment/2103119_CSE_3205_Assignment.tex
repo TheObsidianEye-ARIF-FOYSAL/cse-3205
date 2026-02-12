@@ -1,10 +1,11 @@
 \documentclass[12pt,a4paper]{article}
 
 % =========================================================
-%  CSE 3205 Assignment (Single-file LaTeX)
+%  CSE 3205 Assignment (Single-file LaTeX) - A4 ONLY
 %  Color Design + Graph + GitHub link
-%  - References REMOVED
-%  - UML diagram ADDED (TikZ)
+%  Human-like writing
+%  UML Diagram FIXED to fully fit A4 (auto-scaled)
+%  References REMOVED
 % =========================================================
 
 \usepackage[a4paper,margin=1in]{geometry}
@@ -28,7 +29,7 @@
 
 % ---------- Links ----------
 \usepackage[hidelinks]{hyperref}
-\usepackage{xurl} % nice line breaks for long URLs
+\usepackage{xurl} % better line breaks for long URLs
 \hypersetup{
   colorlinks=true,
   linkcolor=blue,
@@ -78,6 +79,12 @@
   arc=3mm,
   boxrule=0.8pt
 }
+\newtcolorbox{noteBox}{
+  colback=white,
+  colframe=Accent,
+  arc=2mm,
+  boxrule=0.7pt
+}
 
 % ---------- Table row colors ----------
 \rowcolors{2}{Soft}{white}
@@ -93,9 +100,8 @@
 \newcommand{\SubmissionDate}{12 February 2026}
 
 % =========================================================
-%  GitHub Link
+%  GitHub Link (NOTE: % must be escaped as \%)
 % =========================================================
-% NOTE: % in URL must be escaped as \%
 \newcommand{\GitHubLink}{https://github.com/TheObsidianEye-ARIF-FOYSAL/cse-3205/blob/main/CSE\%203205\%20Assignment/2103119_CSE_3205_Assignment.tex}
 
 \begin{document}
@@ -117,7 +123,7 @@
 {\LARGE \textbf{Assignment}\par}
 \vspace{0.7cm}
 
-{\large \textbf{``Software Process Models, Software Testing \& Quality Assurance, and Design Patterns \& Modern Software Tools''}\par}
+{\large \textbf{Software Process Models, Software Testing \& Quality Assurance, and Design Patterns \& Modern Software Tools}\par}
 
 \vspace{0.9cm}
 
@@ -129,7 +135,7 @@ Date of Submission & : \SubmissionDate\\
 
 \vspace{1.0cm}
 
-\begin{infobox}{GitHub Repository (Code Reference)}
+\begin{infobox}{GitHub Link (Code and Version History)}
 \textbf{Link:} \url{\GitHubLink}\\
 \end{infobox}
 
@@ -162,71 +168,73 @@ Department of CSE, RUET\\
 \section{Assignment 1: Software Process Models Analysis}
 
 \subsection{Scenario Overview}
-A mid-sized software company plans to build an Online Course Management System (OCMS) that will
-continuously evolve with frequent requirement changes. Since the platform must remain market-relevant,
-it requires continuous user feedback (from students, instructors, and administrators). Therefore, the chosen
-process model should emphasize iterative delivery, controlled change handling, and stakeholder collaboration.
+The company wants to build an Online Course Management System (OCMS). The main challenge is that
+requirements will \textbf{change frequently} because the system must stay useful and competitive.
+Also, regular feedback from students, instructors, and administrators is expected.
+
+So, the process model should support:
+\begin{itemize}
+  \item fast delivery in small iterations,
+  \item easy handling of changing requirements,
+  \item continuous collaboration with stakeholders.
+\end{itemize}
 
 \subsection{1. Process Model Identification \& Analysis}
 
 \subsubsection{Model 1: Agile (Scrum)}
-\textbf{Core characteristics}
-\begin{itemize}
-  \item \textbf{Iterative \& incremental}: Work is delivered in short sprints (typically 1--4 weeks).
-  \item \textbf{Feedback loops}: Sprint review and sprint retrospective happen in every sprint.
-  \item \textbf{Change management}: Product Backlog is reprioritized between sprints to accommodate change.
-\end{itemize}
+Agile Scrum works in short cycles called \textbf{sprints}. In each sprint, the team selects a small set of
+features, implements them, tests them, and delivers working software.
 
-\textbf{How it fits OCMS}
+\begin{noteBox}
+\textbf{Practical point:} After every sprint, we can show real progress. If the users want changes, the next sprint can handle it.
+\end{noteBox}
+
+\textbf{How Scrum fits OCMS}
 \begin{itemize}
-  \item Early sprints can deliver basic modules (login, course listing) while later sprints add enrollment,
-        grading, analytics, etc.
-  \item Stakeholders can test working software frequently and suggest improvements immediately.
+  \item First sprints deliver basics: login, course listing, user roles.
+  \item Next sprints add enrollment, content upload, assignments, grading, analytics.
+  \item Feedback is collected every sprint and used to improve the next plan.
 \end{itemize}
 
 \subsubsection{Model 2: Spiral Model}
-\textbf{Core characteristics}
-\begin{itemize}
-  \item \textbf{Risk-driven iteration}: Each cycle includes planning, risk analysis, development, and evaluation.
-  \item \textbf{Prototyping}: Reduces uncertainty when requirements are unclear or changing.
-  \item \textbf{Formal control}: Better documentation and explicit risk mitigation compared to Agile.
-\end{itemize}
+The Spiral Model is also iterative, but it is \textbf{risk-focused}. Each cycle includes planning,
+risk analysis, development, and evaluation.
 
-\textbf{How it fits OCMS}
+\textbf{How Spiral fits OCMS}
 \begin{itemize}
-  \item Strong when the project has significant risks (complex integrations, security, scaling).
-  \item Changes are incorporated through re-planning at the beginning of each spiral.
+  \item Strong when there are big risks (security, scaling, third-party integration).
+  \item More formal and heavier than Scrum, which can slow a mid-sized team.
 \end{itemize}
 
 \subsection{2. Comparative Engineering Analysis}
 
 \begin{table}[H]
 \centering
-\caption{Agile (Scrum) vs Spiral Model for OCMS (engineering comparison)}
+\caption{Agile (Scrum) vs Spiral Model for OCMS}
 \begin{tabular}{p{3.4cm} p{5.8cm} p{5.8cm}}
 \toprule
 \rowcolor{TableHead}
 \textbf{Metric} & \textbf{Agile (Scrum)} & \textbf{Spiral Model}\\
 \midrule
 Requirement Flexibility &
-Very high: backlog reprioritization each sprint supports frequent changes with minimal disruption. &
-High but slower: changes absorbed per spiral; longer cycles can delay updates.\\
+Very high: backlog reprioritization each sprint supports frequent changes easily. &
+High but slower: changes handled per spiral cycle (usually longer).\\
 \addlinespace
 Risk Management &
-Moderate: risks handled through continuous integration/testing and early validation (implicit). &
-Very strong: explicit risk identification and mitigation in every spiral iteration.\\
+Moderate: handled continuously, but usually not a formal “risk phase.” &
+Very strong: explicit risk identification and mitigation each iteration.\\
 \addlinespace
 Customer Involvement &
-High and frequent: sprint reviews enable continuous feedback on working software. &
-High but milestone-based: evaluation at spiral end; typically less frequent.\\
+Very frequent: sprint review gives continuous feedback. &
+Frequent but milestone-based: feedback at the end of each spiral.\\
 \addlinespace
-Development Cost &
-Lower overhead; rework cost reduced by short cycles and early feedback. &
-Higher overhead due to risk analysis and documentation; cost-effective mainly for high-risk projects.\\
+Cost \& Overhead &
+Lower overhead; lightweight documentation; faster iteration. &
+Higher overhead because of risk analysis and documentation.\\
 \addlinespace
 Predictability &
-Flexible; progress tracked empirically using sprint velocity and burn-down. &
-More milestone predictability due to structured planning per spiral.\\
+Medium: flexible scope may shift across sprints. &
+Higher: structured cycles give clearer checkpoints.\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -242,36 +250,30 @@ More milestone predictability due to structured planning per spiral.\\
     height=7cm,
     ymin=0, ymax=5,
     ylabel={Score (1=Low, 5=High)},
-    symbolic x coords={Flexibility,Risk,Customer,Cost,Predictability},
+    symbolic x coords={Flexibility,Risk,Feedback,Overhead,Predictability},
     xtick=data,
     legend style={at={(0.5,-0.18)},anchor=north,legend columns=2},
     nodes near coords,
     nodes near coords align={vertical},
     grid=both
 ]
-\addplot coordinates {(Flexibility,5) (Risk,3) (Customer,5) (Cost,4) (Predictability,3)};
-\addplot coordinates {(Flexibility,4) (Risk,5) (Customer,3) (Cost,3) (Predictability,4)};
+\addplot coordinates {(Flexibility,5) (Risk,3) (Feedback,5) (Overhead,4) (Predictability,3)};
+\addplot coordinates {(Flexibility,4) (Risk,5) (Feedback,3) (Overhead,3) (Predictability,4)};
 \legend{Agile (Scrum),Spiral}
 \end{axis}
 \end{tikzpicture}
-\caption{Agile vs Spiral (relative scoring for this scenario)}
+\caption{Agile vs Spiral (relative scoring for the OCMS case)}
 \end{figure}
 
-\subsection{3. Justification \& Recommendation}
-
-\begin{infobox}{Recommendation}
-\textbf{Selected Model: Agile (Scrum)}\\
-Agile is recommended because it best supports frequent requirement changes, continuous feedback, and
-fast incremental delivery---which is ideal for a mid-sized company building an evolving OCMS.
+\subsection{3. Recommendation}
+\begin{infobox}{Final Choice}
+\textbf{Recommended Model: Agile (Scrum)}\\
+Scrum best supports frequent requirement changes and continuous user feedback for an evolving OCMS.
 \end{infobox}
 
-\textbf{Justification}
-\begin{itemize}
-  \item \textbf{Frequent requirement changes:} sprint-based planning absorbs changes every few weeks.
-  \item \textbf{Continuous user feedback:} sprint reviews ensure the product remains aligned with market needs.
-  \item \textbf{Mid-sized company fit:} avoids the heavy risk-documentation overhead that Spiral often requires.
-  \item \textbf{Early MVP:} enables early release and improvement based on real usage data.
-\end{itemize}
+In an OCMS project, priorities will change based on user needs and real usage. Scrum supports this naturally
+because planning happens sprint by sprint. Spiral is excellent for high-risk projects, but for a mid-sized team
+building an evolving product, Scrum is typically the more practical choice.
 
 \newpage
 
@@ -281,64 +283,60 @@ fast incremental delivery---which is ideal for a mid-sized company building an e
 \section{Assignment 2: Software Testing \& Quality Assurance Plan}
 
 \subsection{Scenario Overview}
-A Library Management System (LMS) supports searching books, borrowing/returning items, and managing
-user accounts. Reliability and data accuracy are critical because incorrect inventory status, wrong fines,
-or broken transactions can disrupt library operation.
+A Library Management System (LMS) manages book search, borrowing, returning, and user accounts.
+Here, \textbf{correctness is critical}. Even small mistakes (wrong availability status, wrong fine)
+create real problems in daily library operations.
 
-\subsection{1. Test Strategy Design (Four Testing Types)}
-
+\subsection{1. Testing Strategy (Four Testing Types)}
 \begin{table}[H]
 \centering
-\caption{Testing types and purpose statements}
+\caption{Testing types and what they ensure}
 \begin{tabular}{p{3.2cm} p{12.0cm}}
 \toprule
 \rowcolor{TableHead}
 \textbf{Testing Type} & \textbf{Purpose}\\
 \midrule
-Unit Testing & Validates individual functions/methods (fine calculation, ISBN validation) in isolation.\\
-Integration Testing & Validates interactions between modules (borrow service $\leftrightarrow$ DB update $\leftrightarrow$ user record).\\
-System Testing & Validates the complete integrated system end-to-end under realistic conditions.\\
-Acceptance Testing (UAT) & Confirms real users (librarian/patron/admin) can complete workflows and the system meets business rules.\\
+Unit Testing & Checks individual functions (fine calculation, ISBN validation) in isolation.\\
+Integration Testing & Checks interaction between modules (borrow service, DB, user account).\\
+System Testing & Tests the full system end-to-end using realistic workflows.\\
+Acceptance Testing (UAT) & Confirms real users can complete tasks and rules meet requirements.\\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \subsection{2. Example Test Scenarios}
 
-\subsubsection{Unit Test Scenario}
+\subsubsection{Unit Test Scenario (Fine Calculation)}
 \textbf{Function:} \texttt{CalculateOverdueFine(borrowDate, returnDate, periodDays)} (period=14 days, rate=\$0.50/day)
 \begin{itemize}
-  \item borrow=Jan 1, return=Jan 21 $\Rightarrow$ overdue=6 days $\Rightarrow$ fine=\$3.00
-  \item borrow=Jan 1, return=Jan 10 $\Rightarrow$ fine=\$0.00
-  \item returnDate = null $\Rightarrow$ throws InvalidDateException
+  \item Borrow Jan 1, return Jan 21 $\Rightarrow$ overdue 6 days $\Rightarrow$ fine \$3.00
+  \item Borrow Jan 1, return Jan 10 $\Rightarrow$ not overdue $\Rightarrow$ fine \$0.00
+  \item Missing return date $\Rightarrow$ should throw an error / exception
 \end{itemize}
 
-\subsubsection{Integration Test Scenario}
-\textbf{Modules:} Borrowing $\leftrightarrow$ Inventory DB $\leftrightarrow$ User Account
+\subsubsection{Integration Test Scenario (Borrow + Inventory + Account)}
 \begin{itemize}
-  \item Borrow available book $\Rightarrow$ create borrow record + decrement copies by 1
-  \item If copies=0 $\Rightarrow$ borrowing is blocked
-  \item If DB fails $\Rightarrow$ no partial update persists (transaction rollback)
+  \item Borrow available book $\Rightarrow$ record created + copies reduce by 1.
+  \item Copies = 0 $\Rightarrow$ borrowing blocked with “Unavailable”.
+  \item DB failure during borrow $\Rightarrow$ rollback (no partial update).
 \end{itemize}
 
-\subsubsection{System Test Scenario}
-\textbf{Workflow:} Login $\rightarrow$ Search $\rightarrow$ Borrow $\rightarrow$ Return
+\subsubsection{System Test Scenario (Full Workflow)}
 \begin{itemize}
-  \item State updates are correct (availability, borrow history, due date)
-  \item Each operation responds in $<2$ seconds under normal load
-  \item Concurrent borrow of last copy: only one succeeds; others receive ``Unavailable''
+  \item Login $\rightarrow$ Search $\rightarrow$ Borrow $\rightarrow$ Return works correctly.
+  \item Availability updates immediately after return.
+  \item Two users try last copy: only one succeeds.
 \end{itemize}
 
-\subsubsection{Acceptance Test (UAT) Scenario}
-\textbf{User:} Librarian
+\subsubsection{Acceptance Test Scenario (Librarian)}
 \begin{itemize}
-  \item Scan barcode $\rightarrow$ system finds borrower $\rightarrow$ calculates fine $\rightarrow$ marks Available
-  \item Fine matches manual calculation (if overdue), and book becomes searchable immediately
+  \item Scan barcode $\rightarrow$ borrower found $\rightarrow$ fine shown $\rightarrow$ book marked Available.
+  \item Fine matches manual calculation.
 \end{itemize}
 
 \subsection{3. Software Quality Assurance (SQA) Plan}
 
-\subsubsection{Quality Goals (Measurable Metrics)}
+\subsubsection{Quality Goals (Measurable Targets)}
 \begin{table}[H]
 \centering
 \caption{SQA measurable targets}
@@ -347,52 +345,32 @@ Acceptance Testing (UAT) & Confirms real users (librarian/patron/admin) can comp
 \rowcolor{TableHead}
 \textbf{Quality Attribute} & \textbf{Metric} & \textbf{Target}\\
 \midrule
-Reliability & System uptime & 99.9\% uptime\\
-Critical Defects & Severity-1 defects in production & 0\\
-Data Accuracy & Inventory/account mismatch rate & 0 critical mismatches; accuracy $\geq$ 99.99\%\\
-Performance & Search response time & $<2$ seconds for 95\% of queries\\
-Defect Leakage & Critical bugs found after release & 0\\
-Test Coverage & Automated line coverage & $\geq$ 85\% (100\% for critical modules)\\
+Reliability & Uptime & 99.9\% uptime\\
+Critical Defects & Sev-1 bugs in production & 0\\
+Data Accuracy & Inventory mismatch rate & $\geq$ 99.99\% accurate\\
+Performance & Search response time & $<2$ sec for 95\% queries\\
+Test Coverage & Automated line coverage & $\geq$ 85\% (critical modules 100\%)\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\subsubsection{Review \& Testing Activities}
-\begin{table}[H]
-\centering
-\caption{When reviews and testing occur}
-\begin{tabular}{p{3.5cm} p{10.8cm}}
-\toprule
-\rowcolor{TableHead}
-\textbf{Phase} & \textbf{Activities}\\
-\midrule
-Requirements & Review for completeness, consistency, and testability.\\
-Design & Review DB schema, API contracts, UI flows before implementation.\\
-Implementation & Code review for every pull request; static analysis on commits.\\
-Testing & Unit $\rightarrow$ Integration $\rightarrow$ System tests; regression suite runs regularly.\\
-Pre-release & UAT in staging with representative librarian/patron scenarios.\\
-Post-release & Monitoring: error rates, logs, performance dashboards, health checks.\\
-\bottomrule
-\end{tabular}
-\end{table}
+\subsubsection{Review \& QA Activities}
+\begin{itemize}
+  \item \textbf{Before coding:} review requirements and confirm test cases.
+  \item \textbf{During coding:} code review + static checks + unit tests in every update.
+  \item \textbf{Before release:} regression + system test + UAT in staging.
+  \item \textbf{After release:} monitoring logs and quick hotfix for critical issues.
+\end{itemize}
 
-\subsubsection{Defect Tracking Approach}
-\begin{infobox}{Defect Lifecycle (with triage)}
+\subsubsection{Defect Tracking}
+\begin{infobox}{Defect Lifecycle}
 New $\rightarrow$ Triaged $\rightarrow$ Assigned $\rightarrow$ In Progress $\rightarrow$ Fixed $\rightarrow$ Retest $\rightarrow$ Verified $\rightarrow$ Closed
 \end{infobox}
 
-\textbf{Severity levels:}
-\begin{itemize}
-  \item \textbf{Critical:} crash/data loss/security breach (fix within 24 hours)
-  \item \textbf{High:} major function broken (fix within sprint)
-  \item \textbf{Medium/Low:} minor functional/usability/cosmetic (schedule)
-\end{itemize}
-
-\subsection{4. Impact Evaluation}
-This strategy improves reliability and user satisfaction by catching defects early (unit testing),
-preventing interface/transaction failures (integration testing), validating end-to-end workflows (system testing),
-and ensuring business-rule compliance through real user checks (UAT). Measurable SQA targets and a structured
-defect lifecycle reduce downtime, improve data correctness, and increase trust.
+\subsection{4. Why This Plan Works}
+This approach catches issues early (unit tests), prevents broken module interactions (integration tests),
+verifies real workflows (system tests), and ensures users are satisfied (UAT). Overall, it improves reliability,
+keeps data correct, and reduces downtime.
 
 \newpage
 
@@ -402,30 +380,29 @@ defect lifecycle reduce downtime, improve data correctness, and increase trust.
 \section{Assignment 3: Design Patterns \& Modern Software Tools}
 
 \subsection{Scenario Overview}
-A Smart Home Automation System manages dynamically created devices (lights, fans, sensors) and controls them
-centrally. The design must remain scalable and flexible as device types and vendors expand over time.
+A Smart Home Automation System can grow over time: new devices appear, and multiple vendors provide their
+own implementations. The controller should not need major code changes each time a new vendor is added.
 
-\subsection{1. Architectural Pattern Selection}
-\textbf{Selected Pattern: Abstract Factory Pattern.}
-
-\begin{infobox}{Why Abstract Factory?}
-It supports dynamic creation of \textbf{families of related device objects} (e.g., vendor/protocol-based)
-without specifying concrete classes in the controller, enabling centralized management with loose coupling.
+\subsection{1. Selected Pattern}
+\begin{infobox}{Selected Pattern: Abstract Factory}
+Abstract Factory helps create related objects (Light, Fan, Sensor) without depending on concrete classes.
+This keeps the controller clean and makes the system easier to expand later.
 \end{infobox}
 
-\subsection{2. UML Class Diagram (Abstract Factory)}
+\subsection{2. UML Class Diagram (Abstract Factory) --- A4-Fit}
+% A4-Fit trick: resize to \textwidth so it never gets cut off
 \begin{figure}[H]
 \centering
+\resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[
   class/.style={
     draw=Primary, rounded corners=2mm, very thick,
-    fill=Soft, text width=5.2cm, align=left, inner sep=4pt
+    fill=Soft, text width=5.0cm, align=left, inner sep=4pt
   },
   rel/.style={-Latex, thick, draw=Primary},
   impl/.style={-Latex, thick, dashed, draw=Primary}
 ]
 
-% ---- Factory interface ----
 \node[class] (factory) {
 \textbf{SmartDeviceFactory (interface)}\\ \hline
 + createLight(): Light\\
@@ -433,15 +410,14 @@ without specifying concrete classes in the controller, enabling centralized mana
 + createSensor(): Sensor
 };
 
-% ---- Concrete factories ----
-\node[class, below left=1.2cm and 0.6cm of factory] (philipsF) {
+\node[class, below left=1.1cm and 0.5cm of factory] (philipsF) {
 \textbf{PhilipsFactory}\\ \hline
 + createLight(): Light\\
 + createFan(): Fan\\
 + createSensor(): Sensor
 };
 
-\node[class, below right=1.2cm and 0.6cm of factory] (xiaomiF) {
+\node[class, below right=1.1cm and 0.5cm of factory] (xiaomiF) {
 \textbf{XiaomiFactory}\\ \hline
 + createLight(): Light\\
 + createFan(): Fan\\
@@ -451,128 +427,55 @@ without specifying concrete classes in the controller, enabling centralized mana
 \draw[impl] (philipsF.north) -- (factory.south);
 \draw[impl] (xiaomiF.north) -- (factory.south);
 
-% ---- Product interfaces ----
-\node[class, right=1.2cm of factory, text width=4.4cm] (lightI) {
+\node[class, right=1.1cm of factory, text width=4.2cm] (lightI) {
 \textbf{Light (interface)}\\ \hline
 + on()\\
 + off()
 };
-\node[class, below=1.0cm of lightI, text width=4.4cm] (fanI) {
+
+\node[class, below=0.9cm of lightI, text width=4.2cm] (fanI) {
 \textbf{Fan (interface)}\\ \hline
 + start()\\
 + stop()
 };
-\node[class, below=1.0cm of fanI, text width=4.4cm] (sensorI) {
+
+\node[class, below=0.9cm of fanI, text width=4.2cm] (sensorI) {
 \textbf{Sensor (interface)}\\ \hline
 + read(): data
 };
 
-% ---- Concrete products (Philips) ----
-\node[class, below=1.1cm of philipsF, text width=4.7cm] (pLight) {
-\textbf{PhilipsLight}\\ \hline
-+ on()\\
-+ off()
-};
-\node[class, below=0.9cm of pLight, text width=4.7cm] (pFan) {
-\textbf{PhilipsFan}\\ \hline
-+ start()\\
-+ stop()
-};
-\node[class, below=0.9cm of pFan, text width=4.7cm] (pSensor) {
-\textbf{PhilipsSensor}\\ \hline
-+ read(): data
-};
-
-% ---- Concrete products (Xiaomi) ----
-\node[class, below=1.1cm of xiaomiF, text width=4.7cm] (xLight) {
-\textbf{XiaomiLight}\\ \hline
-+ on()\\
-+ off()
-};
-\node[class, below=0.9cm of xLight, text width=4.7cm] (xFan) {
-\textbf{XiaomiFan}\\ \hline
-+ start()\\
-+ stop()
-};
-\node[class, below=0.9cm of xFan, text width=4.7cm] (xSensor) {
-\textbf{XiaomiSensor}\\ \hline
-+ read(): data
-};
-
-% ---- Realizations to product interfaces ----
-\draw[impl] (pLight.east) -- (lightI.west);
-\draw[impl] (xLight.east) -- (lightI.west);
-
-\draw[impl] (pFan.east) -- (fanI.west);
-\draw[impl] (xFan.east) -- (fanI.west);
-
-\draw[impl] (pSensor.east) -- (sensorI.west);
-\draw[impl] (xSensor.east) -- (sensorI.west);
-
-% ---- Controller ----
-\node[class, above=1.2cm of lightI, text width=5.4cm] (controller) {
+\node[class, above=1.1cm of lightI, text width=5.0cm] (controller) {
 \textbf{SmartHomeController}\\ \hline
 - factory: SmartDeviceFactory\\
 - devices: List\\ \hline
-+ addDevices()\\
++ setup()\\
 + controlAll()
 };
+
 \draw[rel] (controller.west) -- (factory.east);
 
-% ---- Factory creates products ----
 \draw[rel] (factory.east) to[bend left=10] (lightI.west);
 \draw[rel] (factory.east) to[bend left=10] (fanI.west);
 \draw[rel] (factory.east) to[bend left=10] (sensorI.west);
 
-\end{tikzpicture}
-\caption{UML Class Diagram: Abstract Factory Pattern for Smart Home Automation System}
+\end{tikzpicture}%
+}
+\caption{UML Class Diagram: Abstract Factory Pattern (Scaled to fit A4 width)}
 \end{figure}
 
-\subsection{3. Engineering Justification}
+\subsection{3. Why This Pattern Makes Sense}
 \begin{itemize}
-  \item \textbf{Scalability:} add new device types/families by extending factories and product classes; controller unchanged.
-  \item \textbf{Maintainability:} creation/initialization logic stays in factory classes, isolating vendor changes.
-  \item \textbf{Flexibility:} runtime factory selection allows different vendors/configurations without rewriting core logic.
+  \item \textbf{Easy expansion:} add a new vendor factory without changing the controller.
+  \item \textbf{Cleaner design:} object creation stays in factories, not scattered across the system.
+  \item \textbf{Lower maintenance cost:} vendor changes are isolated, so fewer bugs appear.
 \end{itemize}
 
-\subsection{4. Comparative Analysis}
-\textbf{Alternative: Simple Factory / Direct Instantiation.} Direct creation (e.g., \texttt{new Light()})
-couples controller to concrete classes, making expansion harder and increasing modification risk.
-
-\begin{table}[H]
-\centering
-\caption{Abstract Factory vs Simple Factory}
-\begin{tabular}{p{3.0cm} p{6.6cm} p{6.6cm}}
-\toprule
-\rowcolor{TableHead}
-\textbf{Criterion} & \textbf{Abstract Factory} & \textbf{Simple Factory}\\
-\midrule
-Scalability & Extend by adding new families/classes; minimal modification. &
-Factory grows with conditionals; violates Open/Closed Principle.\\
-Maintainability & Changes isolated per vendor family. &
-Central factory becomes bottleneck; higher regression risk.\\
-Flexibility & Runtime factory selection supports mixed ecosystems. &
-Static logic; behavior changes require code edits/redeploy.\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{5. Modern Tool Integration (Git/SCM)}
-\textbf{Role of Git:}
+\subsection{4. Modern Tool (Git) in This Context}
+Git supports reliable teamwork and version control:
 \begin{itemize}
-  \item Version history and traceability for device-driver changes.
-  \item Collaboration via branches and pull requests.
-  \item Controlled releases with tags (e.g., v1.0, v1.1).
-  \item Safe experimentation without breaking stable code.
-\end{itemize}
-
-\textbf{Branching strategy for different device drivers (GitFlow-style):}
-\begin{itemize}
-  \item \textbf{main}: stable production-ready code.
-  \item \textbf{develop}: integration branch for upcoming release (optional).
-  \item \textbf{feature/<driver>}: separate branches for each driver update.
-  \item \textbf{release/<version>}: stabilization before shipping.
-  \item \textbf{hotfix/<issue>}: urgent fixes for production issues.
+  \item tracks all changes (who changed what and when),
+  \item supports collaboration through branches and pull requests,
+  \item helps rollback if an update causes unexpected problems.
 \end{itemize}
 
 \newpage
@@ -581,9 +484,9 @@ Static logic; behavior changes require code edits/redeploy.\\
 %  CONCLUSION
 % =========================================================
 \section*{Conclusion}
-This assignment demonstrates a structured understanding of software engineering by (i) selecting an appropriate
-process model for evolving requirements, (ii) designing a multi-layer testing and SQA strategy to ensure reliability
-and data correctness, and (iii) applying suitable design patterns with modern Git-based configuration management.
-These practices collectively support scalability, maintainability, adaptability, and real-world software quality.
+In this assignment, I selected a process model that fits frequent changes (Scrum), designed a realistic testing and
+SQA plan for correctness and reliability, and applied the Abstract Factory pattern to show how good design supports
+scalability. Overall, these approaches help build software that is easier to maintain, easier to improve, and more
+dependable for real users.
 
 \end{document}

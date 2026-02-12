@@ -15,14 +15,16 @@
 \usepackage{enumitem}
 \usepackage{booktabs}
 \usepackage{ragged2e}
+\usepackage{listings}
+\usepackage{courier}
 
 \geometry{margin=1in}
 \onehalfspacing
 
 \hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    urlcolor=blue
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue
 }
 
 % ------------------------------------------------
@@ -32,6 +34,8 @@
 \definecolor{accent}{RGB}{102,0,204}
 \definecolor{lecturerorange}{RGB}{255,102,0}
 \definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{codebg}{RGB}{248,249,255}
+\definecolor{coderule}{RGB}{102,126,234}
 
 % ------------------------------------------------
 % Section Formatting
@@ -43,6 +47,25 @@
 \titleformat{\subsection}
 {\color{accent}\normalfont\large\bfseries}
 {\thesubsection}{1em}{}
+
+% ------------------------------------------------
+% Code Listing Style
+% ------------------------------------------------
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\footnotesize\ttfamily,
+  frame=single,
+  rulecolor=\color{coderule},
+  breaklines=true,
+  columns=fullflexible,
+  numbers=left,
+  numberstyle=\tiny\color{ruetblue},
+  keywordstyle=\color{accent}\bfseries,
+  commentstyle=\color{ruetblue},
+  stringstyle=\color{lecturerorange},
+  showstringspaces=false
+}
+\lstset{style=mystyle}
 
 % ------------------------------------------------
 % Header/Footer
@@ -78,13 +101,9 @@
 
 \textcolor{accent}{\rule{\linewidth}{1.5pt}}\\[0.8cm]
 
-% -----------------------------
-% Student Info
-% -----------------------------
-
 \begin{tcolorbox}[colback=lightgray,colframe=ruetblue,width=0.85\linewidth]
 \small
-\textbf{Project Title:} Animal Classifier AI\\
+\textbf{Project Title:} Animal Classifier AI (Web Application)\\
 \textbf{Submitted by:} Arif Foysal Bin Haider\\
 \textbf{Section:} B \quad
 \textbf{Series:} 21\\
@@ -93,10 +112,6 @@
 \end{tcolorbox}
 
 \vspace{0.6cm}
-
-% -----------------------------
-% Submitted To
-% -----------------------------
 
 \begin{flushleft}
 \large \textbf{Submitted to}\\[0.2cm]
@@ -107,161 +122,147 @@ Department of Computer Science \& Engineering, RUET
 
 \vspace{0.6cm}
 
-% -----------------------------
-% GitHub Link
-% -----------------------------
-
 \begin{tcolorbox}[colback=white,colframe=accent,width=0.85\linewidth]
 \centering
 \small
-\textbf{Source Code Repository:}\\
+\textbf{Source Code Repository (LaTeX):}\\
 \href{https://github.com/TheObsidianEye-ARIF-FOYSAL/cse-3205/blob/main/CSE%203206%20Essay/2103119_CSE_3206_Essay.tex}
 {\textbf{View LaTeX Source on GitHub}}
 \end{tcolorbox}
 
 \vfill
-
 \textcolor{ruetblue}{\rule{\linewidth}{1pt}}\\
 \small \textit{Heaven's Light is Our Guide}
-
 \end{titlepage}
 
 % ============================================================
-% ESSAY CONTENT
+% ESSAY
 % ============================================================
 
-\section*{Reflection Essay: Self-Directed Learning in Software Engineering}
+\section*{A Reflective Essay on Animal Classifier AI: A Software Engineering Web System}
 \addcontentsline{toc}{section}{Reflection Essay}
 
-\section{Introduction}
+\subsection*{0.1 Technical Decision and Justification}
 
-During the CSE 3206 Software Engineering Sessional, I developed a full-stack AI-powered web application titled \textbf{Animal Classifier AI}. The system classifies images of ten animal categories using deep learning and delivers real-time predictions through a web interface. 
+Although the prediction is powered by a deep learning model, the core software engineering objective of this project was building a reliable \textbf{end-to-end web application} around that model. The most significant architectural decision I made was to design the system as a \textbf{client--server web application} with (1) a Flask backend exposing REST endpoints and (2) a frontend that communicates asynchronously using the Fetch API with \texttt{FormData}. This separation was technically superior to a server-rendered ``form submit + page reload'' approach because model inference is computationally expensive and can be slow or unpredictable in production hosting environments (cold starts, timeouts, and overload). A responsive UI therefore requires explicit state management and graceful failure handling.
 
-While classroom instruction introduced general software engineering principles, this project required me to independently learn and integrate advanced technologies including transfer learning, RESTful API architecture, cloud deployment strategies, and software design patterns.
-
-The most significant technical decision in this project was adopting \textbf{Transfer Learning using MobileNetV2} within TensorFlow/Keras, combined with Flask-based backend architecture. This essay critically reflects on that decision, the challenges of self-directed learning, and how this experience shaped my readiness for lifelong professional growth.
-
-% ------------------------------------------------
-
-\section{Technical Decision and Justification}
-
-\subsection{Chosen Technique: Transfer Learning with MobileNetV2}
-
-The primary new technique I independently learned was \textbf{Transfer Learning using MobileNetV2}. Instead of building a convolutional neural network from scratch, I utilized a pre-trained ImageNet model and added a custom classification head for ten animal classes.
-
-MobileNetV2 was appropriate because:
-
-\begin{itemize}
-    \item Lightweight architecture (~3.5 million parameters)
-    \item Small model size (10.42MB)
-    \item Fast inference time (50--100ms)
-    \item High validation accuracy (~95\%)
-    \item Optimized for real-time web deployment
-\end{itemize}
-
-Its inverted residual blocks and depthwise separable convolutions significantly reduced computational cost while maintaining strong performance.
-
-\subsection{Comparison with Alternative: Custom CNN}
-
-I considered designing a custom CNN from scratch. However:
-
-\begin{itemize}
-    \item It required a larger dataset.
-    \item It increased overfitting risk.
-    \item It produced larger model sizes.
-    \item Training time would be longer.
-\end{itemize}
-
-\begin{center}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Aspect} & \textbf{Custom CNN} & \textbf{MobileNetV2} \\
-\midrule
-Parameters & 10M+ & 3.5M \\
-Model Size & Large & 10.42MB \\
-Inference Speed & Moderate & 50--100ms \\
-Deployment Ready & Difficult & Optimized \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-Therefore, MobileNetV2 was technically superior in scalability, memory efficiency, and deployment readiness.
-
-\subsection{Supporting Architectural Decisions}
-
-To improve performance and maintainability, I implemented:
-
-\begin{itemize}
-    \item \textbf{Singleton Pattern} for loading the ML model once at startup.
-    \item \textbf{Factory Pattern} for standardized image preprocessing.
-    \item \textbf{RESTful API architecture} using Flask.
-    \item \textbf{Layered MVC structure}.
-\end{itemize}
-
-These decisions ensured clean separation of concerns and reduced latency significantly.
-
-% ------------------------------------------------
-
-\section{Self-Directed Learning Experience}
-
-\subsection{Key Challenges}
-
-\textbf{Understanding Transfer Learning:}  
-Determining when to freeze layers, when to fine-tune, and selecting appropriate learning rates required deep study of TensorFlow documentation and experimentation.
-
-\textbf{Model Optimization:}  
-Initially, the model was large and slow. Through research and iterative testing, I reduced its size to 10.42MB while maintaining high accuracy.
-
-\textbf{Backend Integration:}  
-Integrating the ML model into a production-ready Flask server required careful handling of file validation, exception management, and memory optimization.
-
-\textbf{Deployment:}  
-Deploying the application using Gunicorn and cloud platforms introduced DevOps practices such as environment configuration and performance monitoring.
-
-\subsection{Evaluation of Learning Resources}
-
-\begin{itemize}
-    \item Official TensorFlow documentation: technically comprehensive.
-    \item Real Python tutorials: highly practical.
-    \item Stack Overflow: useful for debugging.
-    \item YouTube tutorials: helpful for conceptual clarity.
-\end{itemize}
-
-This process strengthened my ability to critically evaluate and combine multiple learning resources.
-
-% ------------------------------------------------
-
-\section{Reflection and Future Learning Plan}
-
-\subsection{Transformation in Learning Approach}
-
-This project transformed my mindset:
-
-\begin{itemize}
-    \item From passive tutorial-following to problem-driven engineering.
-    \item From isolated coding tasks to integrated systems thinking.
-    \item From hesitation toward complexity to confidence in independent exploration.
-\end{itemize}
-
-\subsection{Future Learning Plan: Docker and CI/CD}
-
-My next goal is mastering \textbf{Docker containerization and CI/CD pipelines}.
-
-\textbf{Plan:}
-\begin{enumerate}
-    \item Learn Docker fundamentals (Weeks 1--2).
-    \item Containerize the Animal Classifier AI (Weeks 3--4).
-    \item Implement GitHub Actions for automated testing and deployment (Weeks 5--6).
-    \item Document the workflow in a technical blog (Week 7).
+\textbf{Rejected Alternative: Traditional Form Submission (Full Page Reload).}
+Initially, I considered a basic HTML form that uploads an image and reloads the page with the result. I rejected this approach for two specific software engineering reasons:
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Poor UX and limited feedback:} A full page reload makes it difficult to provide progressive feedback (loader/spinner), disable buttons to prevent duplicate requests, or show precise error messages for different failure modes.
+  \item \textbf{Weak error recovery:} When the server returns non-JSON errors (e.g., gateway failures) or times out, a form-based flow often collapses into generic browser errors. This is unacceptable for a production-style submission.
 \end{enumerate}
 
-% ------------------------------------------------
+\textbf{Why the async REST approach was better.}
+My frontend behaves like a small state machine: it tracks the selected file, shows a preview, enables the prediction button, displays a loading spinner during the request, and then shows either a result card or an error panel. This architecture made it possible to implement robust behavior that is expected in real web applications:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Progressive enhancement:} click-to-upload works by default; drag-and-drop is layered on top.
+  \item \textbf{Explicit UI states:} show/hide classes (\texttt{.show}) ensure predictable transitions.
+  \item \textbf{Human-friendly failure modes:} different messages for server overload (502), cold start/service unavailable (503), and timeouts (504).
+\end{itemize}
 
-\section{Conclusion}
+A small but important engineering choice was to treat failures as first-class citizens. In \texttt{script.js} I check \texttt{response.ok} before parsing JSON, and I handle cases where error responses contain no JSON body. This prevents UI crashes and makes the website resilient.
 
-The Animal Classifier AI project was a transformative experience in self-directed learning. By independently mastering transfer learning, backend architecture, deployment strategies, and software design patterns, I strengthened both technical competence and adaptive learning ability.
+\begin{lstlisting}[language=JavaScript, caption={Robust request handling with UI state control (core pattern)}]
+loader.classList.add('show');
+predictBtn.disabled = true;
 
-In a rapidly evolving technological landscape, continuous learning is essential. This project enhanced my ability to independently evaluate, adopt, and integrate emerging technologies, preparing me for lifelong professional growth as a software engineer.
+const response = await fetch('/predict', { method: 'POST', body: formData });
+
+if (!response.ok) {
+  let errorMsg = `Server error (${response.status})`;
+  // map common production failures into user-friendly messages
+  if (response.status === 503) errorMsg = 'Service unavailable. Server is starting up.';
+  if (response.status === 504) errorMsg = 'Request timeout. Prediction took too long.';
+  showError(errorMsg);
+  return;
+}
+
+const data = await response.json();
+showResult(data.prediction, data.confidence);
+\end{lstlisting}
+
+\textbf{Supporting Design Decisions.}
+To keep the website maintainable and user-friendly, I designed three supporting components:
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{UI/UX design system in CSS:} gradients, card layout, hover interactions, and a responsive breakpoint for small screens.
+  \item \textbf{Result visualization:} confidence percentage plus an animated confidence bar improves interpretability.
+  \item \textbf{Developer observability:} a dedicated diagnostic page for testing endpoints and response timing.
+\end{enumerate}
+
+\subsection*{0.2 Self-Directed Learning Experience}
+
+Converting a model into a reliable website required learning engineering topics that go beyond training accuracy. The challenges I faced were mainly system-integration challenges, not ML-only challenges.
+
+\textbf{Challenge 1: Frontend state synchronization without frameworks.}
+I intentionally used vanilla JavaScript rather than React/Vue to strengthen my fundamentals. The difficulty was ensuring that every user action (select file, remove file, predict, error, retry) leads to a consistent UI. I solved this by:
+\begin{itemize}[leftmargin=*]
+  \item centralizing file selection into \texttt{handleFileSelect(file)}
+  \item centralizing reset logic into \texttt{clearSelection()}
+  \item controlling visibility using CSS classes (e.g., \texttt{.show})
+\end{itemize}
+This taught me that even small frontends need disciplined state management.
+
+\textbf{Challenge 2: Real deployment failure modes (not seen locally).}
+In local development, requests are fast and stable. In hosted environments, I encountered failure classes such as cold start delays, overloaded instances, and non-JSON gateway responses. My solution was to implement layered handling:
+\begin{itemize}[leftmargin=*]
+  \item check HTTP status before parsing JSON
+  \item generate user-friendly messages for 502/503/504
+  \item provide retry guidance rather than leaving the user stuck
+\end{itemize}
+This improved both reliability and user trust.
+
+\textbf{Challenge 3: Debugging end-to-end systems with proper tooling.}
+A major upgrade in my engineering workflow was building \texttt{diagnostic.html}, a small internal tool that tests:
+\begin{itemize}[leftmargin=*]
+  \item \texttt{/health} endpoint for server availability
+  \item \texttt{/model-status} endpoint for model readiness
+  \item \texttt{/predict} endpoint with request timing and JSON output
+  \item CORS behavior by checking response headers
+\end{itemize}
+This transformed debugging from guesswork into measurable verification, similar to professional practice.
+
+\textbf{Challenge 4: UX polish and responsiveness.}
+I learned that software quality is not only correctness. The CSS includes micro-interactions (fade-in, hover scaling, dragover highlight, shake animation for errors) and mobile responsiveness. These details improved perceived performance and usability without changing backend logic.
+
+\textbf{Evaluation of Learning Resources.}
+During this phase, I learned to prioritize primary sources:
+\begin{itemize}[leftmargin=*]
+  \item \textbf{MDN Web Docs:} Best for Fetch, FormData, FileReader, and drag-and-drop events.
+  \item \textbf{Flask documentation:} Best for route design and template rendering with \texttt{url\_for}.
+  \item \textbf{Community threads:} Useful for quick fixes but required careful validation.
+\end{itemize}
+This taught me an important professional habit: use documentation-first for core behavior, and use community sources mainly for edge-case debugging.
+
+\subsection*{0.3 Reflection and Future Learning Plan}
+
+This project shifted my mindset from ``feature-first'' to ``system-first.'' I realized that building a web system means designing:
+\begin{itemize}[leftmargin=*]
+  \item predictable UI state transitions,
+  \item clean API boundaries,
+  \item failure handling and recovery,
+  \item testability and observability.
+\end{itemize}
+
+\textbf{Next Learning Goal: Automated Testing + CI/CD for Web Applications.}
+My next professional growth target is to establish software quality automation:
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{API testing:} write tests for \texttt{/predict} to validate status codes, JSON schema, and edge cases (missing file, invalid type).
+  \item \textbf{Frontend E2E testing:} simulate upload and prediction flow using a browser automation tool.
+  \item \textbf{CI/CD pipeline:} use GitHub Actions to run tests on every push and prevent regressions.
+\end{enumerate}
+
+\textbf{Action Plan.}
+\begin{itemize}[leftmargin=*]
+  \item Week 1: Create API unit tests and validate error paths.
+  \item Week 2: Add integration tests for JSON response format and latency thresholds.
+  \item Week 3: Add end-to-end tests for the complete UI workflow.
+  \item Week 4: Automate in GitHub Actions and enforce ``fail-fast'' quality gates.
+\end{itemize}
+
+\subsection*{Conclusion}
+
+The Animal Classifier AI project is more than a model demonstration; it is a complete software engineering web system. By designing an asynchronous frontend, implementing reliable API communication, handling real production failures, building diagnostic tooling, and polishing responsive UI, I practiced key software engineering principles: maintainability, robustness, usability, and verifiability. Most importantly, the project gave me a repeatable method for self-directed learning: identify a system need, consult primary documentation, implement incrementally, and validate through testing and diagnostics. This methodology prepares me for continuous growth in modern software engineering.
 
 \vspace{0.5cm}
 \textcolor{ruetblue}{\rule{\linewidth}{1pt}}
